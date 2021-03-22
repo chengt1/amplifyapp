@@ -16,7 +16,7 @@ You need add a service role for Amplify console as github user **aam918** indica
 
 
 ## Bug #2 
-Some necessary GraphQL functions have been renamed.
+Some necessary GraphQL functions have been renamed in module 4, but ./graphql/mutations.js and queries.js names change back to the createNote, listNotes in moduel 5.
 ```
 Failed to compile.
 
