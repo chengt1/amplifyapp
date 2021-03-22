@@ -1,4 +1,16 @@
-# Getting Started with Create React App
+
+
+# Amplifyapp
+
+This project is based on [build react app amplify graphql tutorial](https://aws.amazon.com/getting-started/hands-on/build-react-app-amplify-graphql/).
+
+There were some bugs in the tutorial because the resources created underneath via cloudformation are not complete. On module 3 "Add Authentication" step "Set up CI/CD of the front end and backend", an error in the backend occurs:
+```
+JSONValidationError: File project: data should NOT have additional properties: 'graphqltransformer'
+...
+```
+Solution: 
+You need add a service role for Amplify console as github user **aam918** indicated [here](https://github.com/aws-amplify/amplify-console/issues/1345) and the complete instructions of how to do so is [here](https://docs.aws.amazon.com/amplify/latest/userguide/how-to-service-role-amplify-console.html).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
