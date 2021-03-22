@@ -4,6 +4,8 @@
 
 This project is based on [build react app amplify graphql tutorial](https://aws.amazon.com/getting-started/hands-on/build-react-app-amplify-graphql/).
 
+
+## Bug #1
 There were some bugs in the tutorial because the resources created underneath via cloudformation are not complete. On module 3 "Add Authentication" step "Set up CI/CD of the front end and backend", an error in the backend occurs:
 ```
 JSONValidationError: File project: data should NOT have additional properties: 'graphqltransformer'
@@ -12,7 +14,54 @@ JSONValidationError: File project: data should NOT have additional properties: '
 Solution: 
 You need add a service role for Amplify console as github user **aam918** indicated [here](https://github.com/aws-amplify/amplify-console/issues/1345) and the complete instructions of how to do so is [here](https://docs.aws.amazon.com/amplify/latest/userguide/how-to-service-role-amplify-console.html).
 
+
+## Bug #2 
+Some necessary GraphQL functions have been renamed.
+```
+Failed to compile.
+
+./src/App.js
+Attempted import error: 'createNote' is not exported from './graphql/mutations' (imported as 'createNoteMutation').
+```
+The code provided in module 4 "Add API and Database" step "Write front-end code to interact with the API" is out of date. Variable names have changed. 
+In file App.js, change line 4 and 5 to the following:
+```
+import { listTodos as listNotes } from './graphql/queries';
+import { createTodo as createNoteMutation, deleteTodo as deleteNoteMutation } from './graphql/mutations';
+```
+
+They were the following before, which is refernece old variable names:
+```
+import { listNotes } from './graphql/queries';
+import { createNote as createNoteMutation, deleteNote as deleteNoteMutation } from './graphql/mutations';
+```
+
+## Bug #3
+Runtime error when logged in
+```
+Unhandled Rejection (TypeError): Cannot read property 'items' of undefined
+```
+The reason for this bug is that there are initially no notes but the first thing that loads in the page after login is to fetch all notes and display them.
+
+To resolve add a simple check to see if anything is returned, change lines 18-21:
+```
+ 18  async function fetchNotes() {
+ 19    const apiData = await API.graphql({ query: listNotes });
+ 20    setNotes(apiData.data.listNotes.items);
+ 21  }
+```
+to:
+```
+18  async function fetchNotes() {
+19    const apiData = await API.graphql({ query: listNotes });
+20    if (apiData.data.listNotes){
+21      setNotes(apiData.data.listNotes.items);
+22    }
+23  }
+```
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
 
 ## Available Scripts
 
